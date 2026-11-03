@@ -2,12 +2,14 @@ import { useEffect, useRef, useState, useSyncExternalStore, type ChangeEvent, ty
 import { getAgentModelSnapshot, subscribeAgentModels, type AgentModelSnapshot } from '../../agent/model-selection';
 import { useT } from '../../i18n/locale';
 import { loadProject, loadProjectThumb, saveProjectThumb } from '../../persist/projectStore';
+import type { AiDirectorAspect, AiDirectorStyle } from '../../aiDirector/pendingJob';
 import type { ProjectMeta } from '../../persist/projectStoreCoordinators';
 
 export interface DashboardProps {
   projects: ProjectMeta[];
   onOpen: (id: string) => void;
   onNew: () => void;
+  onStartAiEdit: (file: File, style: AiDirectorStyle, aspect: AiDirectorAspect, duration: string) => Promise<void>;
   onRename: (id: string, name: string) => void;
   onDuplicate: (id: string) => void;
   onDelete: (id: string) => Promise<void>;

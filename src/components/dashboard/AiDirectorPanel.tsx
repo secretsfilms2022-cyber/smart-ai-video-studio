@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { theme } from '../../theme';
+import type { AiDirectorAspect, AiDirectorStyle } from '../../aiDirector/pendingJob';
 import { Icon } from '../icons';
 
 type DirectorStyle = 'wedding' | 'cinematic' | 'reel' | 'event' | 'documentary';
@@ -55,7 +56,7 @@ function formatBytes(bytes: number) {
   return `${(bytes / 1024 ** i).toFixed(i ? 1 : 0)} ${units[i]}`;
 }
 
-export function AiDirectorPanel({ onNew }: { onNew: () => void }) {
+export function AiDirectorPanel({ onStartAiEdit }: { onStartAiEdit: (file: File, style: AiDirectorStyle, aspect: AiDirectorAspect, duration: string) => Promise<void> }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState('');
@@ -63,6 +64,7 @@ export function AiDirectorPanel({ onNew }: { onNew: () => void }) {
   const [aspect, setAspect] = useState<Aspect>('9:16');
   const [duration, setDuration] = useState('30s');
   const [ideasVisible, setIdeasVisible] = useState(false);
+  const [starting, setStarting] = useState(false);
 
   useEffect(() => {
     if (!file) {
@@ -170,10 +172,13 @@ export function AiDirectorPanel({ onNew }: { onNew: () => void }) {
           {ideasVisible && (
             <div style={{ display: 'grid', gap: 8 }}>
               {ideas.map((idea, index) => (
-                <button key={idea} type="button" onClick={onNew} style={ideaButton}>
+                <button key={idea} type="button" onClick={() => {
+                    setStarting(true);
+                    void onStartAiEdit(file, style, aspect, duration).finally(() => setStarting(false));
+                  }} style={ideaButton}>
                   <span style={ideaNumber}>{index + 1}</span>
                   <span style={{ flex: 1, textAlign: 'left' }}>{idea}</span>
-                  <span style={{ color: theme.accent, fontSize: 10.5, fontWeight: 700 }}>USE →</span>
+                  <span style={{ color: theme.accent, fontSize: 10.5, fontWeight: 700 }}>{starting ? 'STARTING…' : 'USE →'}</span>
                 </button>
               ))}
             </div>

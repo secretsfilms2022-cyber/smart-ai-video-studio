@@ -8,12 +8,14 @@ import {
 } from '../persist/projectStore';
 import { buildProjectExport, importProjectPackage } from '../persist/projectTransfer';
 import { emptyProjectDoc, navigateTo } from './appShell';
+import { setPendingAiDirectorJob, type AiDirectorAspect, type AiDirectorStyle } from '../aiDirector/pendingJob';
 
 type Translate = (zh: string, params?: Record<string, string | number>) => string;
 
 export interface DashboardActions {
   onOpen: (id: string) => void;
   onNew: () => Promise<void>;
+  onStartAiEdit: (file: File, style: AiDirectorStyle, aspect: AiDirectorAspect, duration: string) => Promise<void>;
   onRename: (id: string, name: string) => Promise<void>;
   onDuplicate: (id: string) => Promise<void>;
   onDelete: (id: string) => Promise<void>;
@@ -66,6 +68,18 @@ export function useDashboardActions(refresh: () => Promise<void>): DashboardActi
     onOpen: (id) => navigateTo(`#/editor/${id}`),
     onNew: async () => {
       const project = await createProject(randomProjectName(), emptyProjectDoc());
+      await refresh();
+      navigateTo(`#/editor/${project.id}`);
+    },
+    onStartAiEdit: async (file, style, aspect, duration) => {
+      setPendingAiDirectorJob({
+        file,
+        style,
+        aspect,
+        duration,
+        prompt: `Use the smart-digital-studio-auto-edit skill. Edit this uploaded footage end-to-end as a polished ${style} video. Target ${duration} and ${aspect}. Analyze the real footage, select the strongest moments, build the editable timeline, detect scenes, use transcript when speech exists, add useful captions, reframe for the output, apply restrained professional color correction, add suitable available audio, and verify final frames. Preserve natural faces and do not invent events. Execute the edit rather than only giving ideas.`,
+      });
+      const project = await createProject(`Smart Digital Studio · ${style}`, emptyProjectDoc());
       await refresh();
       navigateTo(`#/editor/${project.id}`);
     },

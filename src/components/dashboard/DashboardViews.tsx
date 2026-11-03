@@ -184,7 +184,7 @@ export function DashboardContent({ props, model }: { props: DashboardProps; mode
     <main style={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
       <div style={{ maxWidth: 1120, margin: '0 auto', padding: '28px 24px 80px' }}>
         {model.modelSnapshot.loaded && model.modelSnapshot.choices.length === 0 && <ModelSetupCard onOpen={() => model.setDialog('settings', true)} />}
-        <AiDirectorPanel onNew={props.onNew} />
+        <AiDirectorPanel onStartAiEdit={props.onStartAiEdit} />
         <ProjectToolbar projects={props.projects} model={model} />
         <ProjectGrid props={props} model={model} />
       </div>
