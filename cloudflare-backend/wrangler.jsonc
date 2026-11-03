@@ -2,13 +2,13 @@
   "$schema": "../node_modules/wrangler/config-schema.json",
   "name": "smart-digital-studio-video-backend",
   "main": "src/index.ts",
-  "compatibility_date": "2026-10-23",
+  "compatibility_date": "2026-11-03",
   "compatibility_flags": ["nodejs_compat"],
   "containers": [
     {
       "class_name": "VideoEditorContainer",
       "image": "../Dockerfile",
-      "scheduling_policy": "default"
+      "max_instances": 1
     }
   ],
   "durable_objects": {
@@ -19,10 +19,10 @@
       }
     ]
   },
-  "migrations": [
-    {
-      "tag": "v1",
-      "new_sqlite_classes": ["VideoEditorContainer"]
+  "exports": {
+    "VideoEditorContainer": {
+      "type": "durable-object",
+      "storage": "sqlite"
     }
-  ]
+  }
 }
