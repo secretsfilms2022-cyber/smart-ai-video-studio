@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { theme } from '../../theme';
 import { Icon } from '../icons';
 
@@ -187,7 +187,7 @@ export function AiDirectorPanel({ onNew }: { onNew: () => void }) {
   );
 }
 
-const selectStyle: React.CSSProperties = {
+const selectStyle: CSSProperties = {
   display: 'block', width: '100%', marginTop: 6, boxSizing: 'border-box', borderRadius: 9,
   border: `1px solid ${theme.border}`, background: theme.surface, color: theme.textStrong, padding: '8px 9px',
   fontSize: 11.5,
