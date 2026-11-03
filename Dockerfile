@@ -1,7 +1,6 @@
 FROM node:24-bookworm
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV NODE_ENV=production
 ENV OPENCHATCUT_RUNTIME_PROFILE=shared
 ENV PORT=5199
 
@@ -11,7 +10,7 @@ RUN apt-get update \
 
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --include=dev
 
 COPY . .
 RUN npm run sync:mediapipe \
@@ -19,6 +18,7 @@ RUN npm run sync:mediapipe \
   && npm run generate:server-tool-catalog \
   && npm run build
 
+ENV NODE_ENV=production
 ENV CC_BROWSER_EXECUTABLE=/usr/bin/chromium
 
 EXPOSE 5199
