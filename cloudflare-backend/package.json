@@ -1,0 +1,10 @@
+{
+  "name": "smart-digital-studio-video-backend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@cloudflare/containers": "^0.8.0",
+    "wrangler": "^4.40.0"
+  }
+}
