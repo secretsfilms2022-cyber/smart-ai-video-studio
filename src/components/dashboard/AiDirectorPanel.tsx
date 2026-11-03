@@ -173,6 +173,7 @@ export function AiDirectorPanel({ onStartAiEdit }: { onStartAiEdit: (file: File,
             <div style={{ display: 'grid', gap: 8 }}>
               {ideas.map((idea, index) => (
                 <button key={idea} type="button" onClick={() => {
+                    if (!file) return;
                     setStarting(true);
                     void onStartAiEdit(file, style, aspect, duration).finally(() => setStarting(false));
                   }} style={ideaButton}>
@@ -194,7 +195,7 @@ export function AiDirectorPanel({ onStartAiEdit }: { onStartAiEdit: (file: File,
 
 const selectStyle: CSSProperties = {
   display: 'block', width: '100%', marginTop: 6, boxSizing: 'border-box', borderRadius: 9,
-  border: `1px solid ${theme.border}`, background: theme.surface, color: theme.textStrong, padding: '8px 9px',
+  border: `1px solid ${theme.border}`, background: theme.panel, color: theme.textStrong, padding: '8px 9px',
   fontSize: 11.5,
 };
 
