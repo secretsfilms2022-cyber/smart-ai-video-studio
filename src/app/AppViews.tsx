@@ -6,6 +6,7 @@ import { loadProjectForEditing, renameProject } from '../persist/projectStore';
 import type { ProjectMeta } from '../persist/projectStoreCoordinators';
 import { theme } from '../theme';
 import { emptyProjectDoc, navigateTo, type AppRoute } from './appShell';
+import { consumePendingAiDirectorJob } from '../aiDirector/pendingJob';
 import { editorAccess } from './editorAccess';
 import { EditorErrorBoundary, SecureContextRequiredView } from './EditorGuards';
 import { useDashboardActions } from './useDashboardActions';
@@ -92,7 +93,7 @@ function EditorLoader({ meta, onHome, onRename }: EditorLoaderProps) {
   return (
     <EditorErrorBoundary translate={t} onHome={onHome}>
       <Suspense fallback={<AppSplash text={t('加载编辑器…')} />}>
-        <Editor initial={load.doc} project={meta} onHome={onHome} onRename={onRename} />
+        <Editor initial={load.doc} project={meta} onHome={onHome} onRename={onRename} initialAiDirectorJob={consumePendingAiDirectorJob() ?? undefined} />
       </Suspense>
     </EditorErrorBoundary>
   );
