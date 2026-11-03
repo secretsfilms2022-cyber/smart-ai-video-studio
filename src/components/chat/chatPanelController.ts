@@ -62,7 +62,7 @@ export interface ChatPanelProps {
   collapsed: boolean;
   onToggleCollapse: () => void;
   onPreviewState: (state: TimelineState | null) => void;
-  seed?: { text: string; nonce: number; references?: RefItem[]; autoSubmit?: boolean } | null;
+  seed?: { text: string; nonce: number; references?: RefItem[]; autoSubmit?: boolean; autoApply?: boolean } | null;
   creativeMode: string | null;
   onCreativeModeChange: (id: string | null) => void;
   onImportMedia: ChatMediaImporter;
