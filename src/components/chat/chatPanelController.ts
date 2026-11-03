@@ -218,6 +218,7 @@ function useComposerSeed(
     composer.setPasteError(null);
     composer.setInput(seed.text);
     composer.commitSelectedRefs(seed.references ?? []);
+    if (seed.autoApply) composer.setAutoApply(true);
     if (!collapsed) composer.taRef.current?.focus();
     if (seed.autoSubmit && submittedNonce.current !== seed.nonce) {
       submittedNonce.current = seed.nonce;
