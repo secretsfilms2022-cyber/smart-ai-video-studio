@@ -62,7 +62,7 @@ export interface ChatPanelProps {
   collapsed: boolean;
   onToggleCollapse: () => void;
   onPreviewState: (state: TimelineState | null) => void;
-  seed?: { text: string; nonce: number; references?: RefItem[] } | null;
+  seed?: { text: string; nonce: number; references?: RefItem[]; autoSubmit?: boolean } | null;
   creativeMode: string | null;
   onCreativeModeChange: (id: string | null) => void;
   onImportMedia: ChatMediaImporter;
@@ -207,9 +207,11 @@ function useComposerProject(composer: ChatComposerController, projectId: string)
 
 function useComposerSeed(
   composer: ChatComposerController,
+  agent: AgentController,
   seed: ChatPanelProps['seed'],
   collapsed: boolean,
 ): void {
+  const submittedNonce = useRef<number | null>(null);
   useEffect(() => {
     if (!seed) return;
     composer.invalidateAttachmentDraft();
@@ -217,6 +219,22 @@ function useComposerSeed(
     composer.setInput(seed.text);
     composer.commitSelectedRefs(seed.references ?? []);
     if (!collapsed) composer.taRef.current?.focus();
+    if (seed.autoSubmit && submittedNonce.current !== seed.nonce) {
+      submittedNonce.current = seed.nonce;
+      const run = () => {
+        if (!isAgentModelReady(getAgentModelSnapshot()) || agent.running) {
+          window.setTimeout(run, 500);
+          return;
+        }
+        void agent.send(seed.text, {
+          askOnly: false,
+          references: seed.references ?? [],
+        });
+        composer.setInput('');
+        composer.commitSelectedRefs([]);
+      };
+      window.setTimeout(run, 0);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seed?.nonce]);
 }
@@ -405,7 +423,7 @@ export function useChatPanelController(props: ChatPanelProps): ChatPanelControll
   const externalProposal = useExternalAgentBridge(props.ctx, props.projectId);
   const scroll = useChatScrollController();
   useComposerProject(composer, props.projectId);
-  useComposerSeed(composer, props.seed, props.collapsed);
+  useComposerSeed(composer, agent, props.seed, props.collapsed);
   useChatAutoScroll(scroll, agent.messages, agent.running, agent.proposal);
   usePanelEffects(props, agent, composer);
   const actions = useChatActions(props, t, agent, composer);
