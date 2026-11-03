@@ -100,6 +100,7 @@ function useEditorUiStage(props: EditorProps, base: BaseStage, environment: Envi
           text: job.prompt,
           nonce: Date.now(),
           autoSubmit: true,
+          autoApply: true,
         });
         panels.setChatCollapsed(false);
         showAppToast(t('AI Director 已开始分析素材并准备自动剪辑。'));
