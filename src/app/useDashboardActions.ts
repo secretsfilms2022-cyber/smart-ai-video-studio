@@ -77,7 +77,7 @@ export function useDashboardActions(refresh: () => Promise<void>): DashboardActi
         style,
         aspect,
         duration,
-        prompt: `Use the smart-digital-studio-auto-edit skill. Edit this uploaded footage end-to-end as a polished ${style} video. Target ${duration} and ${aspect}. Analyze the real footage, select the strongest moments, build the editable timeline, detect scenes, use transcript when speech exists, add useful captions, reframe for the output, apply restrained professional color correction, add suitable available audio, and verify final frames. Preserve natural faces and do not invent events. Execute the edit rather than only giving ideas.`,
+        prompt: `Use the smart-digital-studio-auto-edit skill. Edit this uploaded footage end-to-end as a polished ${style} video. Target ${duration} and ${aspect}. Analyze the real footage, select the strongest moments, build the editable timeline, detect scenes, use transcript when speech exists, add useful captions, reframe for the output, apply restrained professional color correction, add suitable available audio, verify final frames, and export the finished result as an MP4 using the app's built-in export pipeline. Preserve natural faces and do not invent events. Execute the edit rather than only giving ideas.`,
       });
       const project = await createProject(`Smart Digital Studio · ${style}`, emptyProjectDoc());
       await refresh();
