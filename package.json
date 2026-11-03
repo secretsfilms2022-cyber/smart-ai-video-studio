@@ -26,7 +26,7 @@
     "dev:isolated": "node scripts/dev-profile.mjs",
     "predev:shared": "npm run sync:mediapipe && npm run verify:server-tool-catalog",
     "dev:shared": "vite --config config/vite.config.ts",
-    "prebuild": "node scripts/sync-shader-sources.mjs --check && npm run sync:mediapipe && npm run sync:whisper-cli && npm run verify:server-tool-catalog",
+    "prebuild": "node scripts/sync-shader-sources.mjs --check && npm run sync:mediapipe && npm run sync:whisper-cli && npm run generate:server-tool-catalog",
     "build": "tsc -b && vite build --config config/vite.config.ts",
     "update:model-capabilities": "node --use-env-proxy scripts/update-llm-model-capabilities.mjs",
     "verify:affected": "node scripts/run-affected-verifies.mjs",
