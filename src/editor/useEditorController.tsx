@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { enqueueVisualAnalysis } from '../agent/progress/visual-analysis-jobs';
 import { useAutoMusicAnalysis } from '../audio/intelligence/useAutoMusicAnalysis';
 import { isolateVoiceOnSrc } from '../audio/isolateVoice';
@@ -19,6 +20,7 @@ import { captureTimelineItemSource, validateTimelineItemSourceBatch } from './me
 import { useEditor } from './store';
 import { projectFrameRateLock } from './timelineFrameRate';
 import type { ProjectDoc } from './types';
+import type { PendingAiDirectorJob } from '../aiDirector/pendingJob';
 import { useEditorAgentEnvironment } from './useEditorAgentEnvironment';
 import { useEditorAutoGrade } from './useEditorAutoGrade';
 import { useEditorProjectPersistence } from './useEditorProjectPersistence';
@@ -34,6 +36,7 @@ export interface EditorProps {
   project: ProjectMeta;
   onHome: () => void;
   onRename: (name: string) => void;
+  initialAiDirectorJob?: PendingAiDirectorJob;
 }
 
 function useEditorBaseStage({ initial, project }: EditorProps) {
@@ -82,6 +85,31 @@ function useEditorUiStage(props: EditorProps, base: BaseStage, environment: Envi
     docRef: agent.docRef, getPlayhead: dialogs.getPlayhead, setChatCollapsed: panels.setChatCollapsed,
     setChatSeed: dialogs.setChatSeed, t,
   });
+  const aiDirectorStarted = useRef(false);
+  useEffect(() => {
+    const job = props.initialAiDirectorJob;
+    if (!job || aiDirectorStarted.current) return;
+    aiDirectorStarted.current = true;
+    let alive = true;
+    void (async () => {
+      try {
+        const asset = await ingest.importToPool(job.file);
+        if (!alive) return;
+        commands.addMediaItem(asset);
+        dialogs.setChatSeed({
+          text: job.prompt,
+          nonce: Date.now(),
+          autoSubmit: true,
+        });
+        panels.setChatCollapsed(false);
+        showAppToast(t('AI Director 已开始分析素材并准备自动剪辑。'));
+      } catch (error) {
+        showAppToast(error instanceof Error ? error.message : t('AI Director 导入素材失败。'), { error: true });
+      }
+    })();
+    return () => { alive = false; };
+  }, [commands, dialogs, ingest.importToPool, panels.setChatCollapsed, props.initialAiDirectorJob, t]);
+
   const exportActions = useEditorWorkspaceExportActions({
     commands, docRef: agent.docRef, fps: state.fps, projectId: props.project.id, t,
     shortcutApiRef: dialogs.shortcutApiRef, setShowDesign: dialogs.setShowDesign,
