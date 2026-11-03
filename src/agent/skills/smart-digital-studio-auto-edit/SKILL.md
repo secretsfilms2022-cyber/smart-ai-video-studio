@@ -25,7 +25,8 @@ Do the complete edit, not merely provide ideas. The result must remain a real ed
 10. Add captions when speech materially contributes to the edit. Keep captions readable and clear of faces.
 11. Add suitable music/audio treatment from available local resources when appropriate. Never claim a music track was added if no usable resource/provider exists.
 12. Verify representative timeline frames after the major visual changes. Fix obvious framing, caption, timing, or color problems.
-13. Leave the project editable and summarize what was actually changed.
+13. Export the finished timeline to MP4 through OpenChatCut's built-in export pipeline after verification. Do not merely open the export dialog; submit the export job and report its actual status.
+14. Leave the project editable and summarize what was actually changed.
 
 ## Smart Digital Studio defaults
 
