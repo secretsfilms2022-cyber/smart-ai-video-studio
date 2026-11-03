@@ -34,6 +34,8 @@ export interface EditorChatSeed {
   nonce: number;
   references?: AgentReference[];
   autoSubmit?: boolean;
+  /** Force proposal auto-apply for a trusted one-shot automation such as AI Director. */
+  autoApply?: boolean;
 }
 
 export interface EditorWorkspaceDialogs {
