@@ -33,6 +33,7 @@ export interface EditorChatSeed {
   text: string;
   nonce: number;
   references?: AgentReference[];
+  autoSubmit?: boolean;
 }
 
 export interface EditorWorkspaceDialogs {
