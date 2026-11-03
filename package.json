@@ -1,8 +1,8 @@
 {
-  "name": "openchatcut",
+  "name": "smart-digital-studio-ai-video-studio",
   "private": true,
   "version": "0.2.17",
-  "description": "Open-source ChatCut alternative: local-first, agent-native AI video editor with MCP.",
+  "description": "Smart Digital Studio AI Video Studio — an open-source, local-first conversational AI video editor built on OpenChatCut.",
   "license": "AGPL-3.0-or-later",
   "author": "OpenChatCut Contributors",
   "type": "module",
@@ -10,7 +10,7 @@
   "bin": {
     "occ": "./cli-dist/occ.mjs"
   },
-  "desktopName": "openchatcut.desktop",
+  "desktopName": "smart-digital-studio.desktop",
   "engines": {
     "node": ">=24 <25"
   },
