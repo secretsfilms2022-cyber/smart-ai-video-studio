@@ -2,19 +2,19 @@
   <img src="public/openchatcut-icon.png" width="96" alt="OpenChatCut" />
 </p>
 
-<h1 align="center">OpenChatCut</h1>
+<h1 align="center">Smart Digital Studio — AI Video Studio</h1>
 
 <p align="center">
   <a href="README_ZH.md">简体中文</a> · <strong>English</strong>
 </p>
 
 <p align="center">
-  <strong>Open-source ChatCut alternative · agent-native · local-first AI video editor</strong>
+  <strong>AI-powered video editor for Smart Digital Studio · local-first · conversational · professional timeline</strong>
 </p>
 
 <p align="center">
-  Let Codex, Claude Code, and the built-in agent read, edit, and export real video projects that remain fully editable.
-  Website: <a href="https://openchatcut.com">openchatcut.com</a>
+  Upload footage, ask the AI to analyse it, generate editing ideas, create social-ready cuts, and continue refining everything on a real editable timeline.
+  Built on the open-source OpenChatCut project and customized for Smart Digital Studio.
 </p>
 
 <p align="center">
@@ -88,6 +88,26 @@ If OpenChatCut helps you, you can support its continued development on Ko-fi or 
 </p>
 
 ---
+
+## Smart Digital Studio AI Video Studio
+
+This repository is the **Smart Digital Studio edition** of OpenChatCut. It keeps the upstream project's editable timeline, conversational agent, local-first architecture, transcription, captions, effects, motion graphics, audio tools, AI media generation and production exports while adding a branded creator workflow for Smart Digital Studio.
+
+### Product direction
+
+**Upload → Analyse → Get ideas → Choose a format → AI edit → Review → Export**
+
+Initial creator presets are planned for:
+
+- 💍 Wedding
+- ❤️ Pre-wedding
+- 🎉 Events
+- 🎞️ Cinematic
+- 📱 Instagram Reels / YouTube Shorts
+- ▶️ YouTube
+- 🎥 Documentary
+
+> Upstream attribution and the AGPL-3.0-or-later license are retained. This fork is not affiliated with the OpenChatCut maintainers.
 
 ## What is OpenChatCut?
 
