@@ -1,7 +1,7 @@
 import { defineConfig, loadEnv, searchForWorkspaceRoot, type Plugin } from 'vite';
 import { parse as parseDotenv } from 'dotenv';
 import react from '@vitejs/plugin-react';
-import { existsSync, readFileSync, realpathSync, rmSync } from 'node:fs';
+import { existsSync, readFileSync, realpathSync, rmSync, readdirSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { serverPlugins } from '../server/plugins/index.ts';
 import { seedKeystore, getKey } from '../server/keystore.ts';
@@ -63,6 +63,39 @@ function excludeUserMediaFromBuild(): Plugin {
  * Serve those .mjs files verbatim before Vite's transform middleware. The
  * production static server ignores query strings, so build output is untouched.
  */
+
+
+/**
+ * Cloudflare Pages rejects individual static assets larger than 25 MiB.
+ * ONNX Runtime's threaded browser WASM binaries can exceed that limit.
+ * They are optional browser-inference payloads; the Node/FFmpeg editor and
+ * server export pipeline do not depend on these static copies. Keep them in
+ * normal/local builds, but omit only the oversized ORT WASM files from a
+ * Pages deployment so the web shell can deploy successfully.
+ */
+function pruneCloudflareOversizedOrtAssets(): Plugin {
+  return {
+    name: 'openchatcut-cloudflare-ort-asset-limit',
+    apply: 'build',
+    closeBundle() {
+      if (!process.env.CF_PAGES) return;
+      const assetsDir = resolve(process.cwd(), 'dist/assets');
+      if (!existsSync(assetsDir)) return;
+      for (const name of readdirSync(assetsDir)) {
+        if (!/^ort-wasm.*\.wasm$/i.test(name)) continue;
+        const target = resolve(assetsDir, name);
+        const size = statSync(target).size;
+        if (size > 25 * 1024 * 1024) {
+          rmSync(target, { force: true });
+          process.stdout.write(
+            `[vite] pruned Cloudflare-incompatible ORT WASM asset: ${name} (${Math.round(size / 1024 / 1024)} MiB)\\n`,
+          );
+        }
+      }
+    },
+  };
+}
+
 function serveOrtWasmLoader(): Plugin {
   return {
     name: 'openchatcut-ort-wasm-loader',
@@ -147,7 +180,7 @@ export default defineConfig(({ mode }) => {
     // public/ = user runtime only (media/uploads). Product static files live in assets/
     // and are served/copied by productAssetsPlugin (URLs unchanged: /fonts, /thumbnails, …).
     publicDir: 'public',
-    plugins: [serveOrtWasmLoader(), react(), productAssetsPlugin(), excludeUserMediaFromBuild(), ...serverPlugins()],
+    plugins: [serveOrtWasmLoader(), react(), productAssetsPlugin(), excludeUserMediaFromBuild(), pruneCloudflareOversizedOrtAssets(), ...serverPlugins()],
     server: {
       port: 5199,
       strictPort: true,
