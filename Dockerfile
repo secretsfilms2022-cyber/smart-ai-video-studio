@@ -15,8 +15,7 @@ RUN npm ci --include=dev
 COPY . .
 RUN npm run sync:mediapipe \
   && npm run sync:whisper-cli \
-  && npm run generate:server-tool-catalog \
-  && npm run build
+  && npm run generate:server-tool-catalog
 
 ENV NODE_ENV=production
 ENV CC_BROWSER_EXECUTABLE=/usr/bin/chromium
