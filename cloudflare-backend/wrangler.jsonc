@@ -4,25 +4,7 @@
   "main": "src/index.ts",
   "compatibility_date": "2026-11-03",
   "compatibility_flags": ["nodejs_compat"],
-  "containers": [
-    {
-      "class_name": "VideoEditorContainer",
-      "image": "../Dockerfile",
-      "max_instances": 1
-    }
-  ],
-  "durable_objects": {
-    "bindings": [
-      {
-        "name": "VIDEO_EDITOR",
-        "class_name": "VideoEditorContainer"
-      }
-    ]
-  },
-  "exports": {
-    "VideoEditorContainer": {
-      "type": "durable-object",
-      "storage": "sqlite"
-    }
-  }
+  "containers": [{"class_name":"VideoEditorContainer","image":"../Dockerfile","max_instances":1}],
+  "durable_objects": {"bindings":[{"name":"VIDEO_EDITOR","class_name":"VideoEditorContainer"}]},
+  "exports": {"VideoEditorContainer":{"type":"durable-object","storage":"sqlite"}}
 }
