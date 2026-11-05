@@ -6,7 +6,7 @@
   "compatibility_flags": ["nodejs_compat"],
   "containers": [{
     "class_name": "VideoEditorContainer",
-    "image": "../Dockerfile",
+    "image": "ghcr.io/secretsfilms2022-cyber/smart-ai-video-studio:latest",
     "max_instances": 1,
     "instance_type": {
       "vcpu": 4,
