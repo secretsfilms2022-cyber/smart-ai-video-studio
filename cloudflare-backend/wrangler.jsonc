@@ -4,7 +4,16 @@
   "main": "src/index.ts",
   "compatibility_date": "2026-11-03",
   "compatibility_flags": ["nodejs_compat"],
-  "containers": [{"class_name":"VideoEditorContainer","image":"../Dockerfile","max_instances":1}],
+  "containers": [{
+    "class_name": "VideoEditorContainer",
+    "image": "../Dockerfile",
+    "max_instances": 1,
+    "instance_type": {
+      "vcpu": 4,
+      "memory_mib": 12288,
+      "disk_mb": 20000
+    }
+  }],
   "durable_objects": {"bindings":[{"name":"VIDEO_EDITOR","class_name":"VideoEditorContainer"}]},
   "exports": {"VideoEditorContainer":{"type":"durable-object","storage":"sqlite"}}
 }
