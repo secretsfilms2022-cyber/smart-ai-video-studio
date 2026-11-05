@@ -9,12 +9,8 @@ ENV XDG_CACHE_HOME=/tmp/.chromium
 USER root
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci --include=dev
-
+COPY node_modules ./node_modules
 COPY . .
-RUN npm run sync:mediapipe \
-  && npm run sync:whisper-cli \
-  && npm run generate:server-tool-catalog
 
 EXPOSE 5199
 CMD ["npm","run","dev","--","--host","0.0.0.0"]
