@@ -43,3 +43,7 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository_owner }}/smart-ai-video-studio:latest
             ghcr.io/${{ github.repository_owner }}/smart-ai-video-studio:${{ github.sha }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.description=Smart Digital Studio AI Video Studio OpenChatCut runtime
+            org.opencontainers.image.licenses=AGPL-3.0-or-later
