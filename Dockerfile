@@ -9,7 +9,7 @@ ENV XDG_CACHE_HOME=/tmp/.chromium
 USER root
 WORKDIR /app
 COPY package*.json ./
-COPY node_modules ./node_modules
+RUN npm ci --include=dev
 COPY . .
 
 EXPOSE 5199
