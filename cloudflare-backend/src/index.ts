@@ -6,8 +6,7 @@ export class VideoEditorContainer extends Container {
   envVars = {
     NODE_ENV: "production",
     OPENCHATCUT_RUNTIME_PROFILE: "shared",
-    PORT: "5199",
-    CC_BROWSER_EXECUTABLE: "/usr/bin/chromium"
+    PORT: "5199"
   };
 
   async fetch(request: Request) {
